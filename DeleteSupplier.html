@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div>
+        <label for="">İd:</label>
+        <input type="text" id="id" />
+    </div>
+    <div>
+        <button onclick="add()">Delete</button>
+    </div>
+    <ul id="suppliers">
+
+    </ul>
+    
+</body>
+<script>
+    function add() {
+    let idVal = document.getElementById('id').value;
+
+    if (idVal) {
+        deleteSupplier(idVal);
+    } else {
+        alert('Lütfen bir ID girin.');
+    }
+}
+    function deleteSupplier(index) {
+    axios.delete('https://northwind.vercel.app/api/suppliers/' + index)
+        .then(res => {
+            console.log('Response', res);
+            alert('Silme işlemi başarılı');
+            loadSupplierList();
+        })
+}
+    function loadSupplierList() {
+        let suppliersList = document.getElementById('suppliers');
+        suppliersList.innerHTML = '';
+
+        axios.get('https://northwind.vercel.app/api/suppliers')
+            .then(res => {
+                let data = res.data;
+
+                data.forEach((element, index) => {
+                    var liElement = document.createElement('li');
+                    liElement.innerHTML = 'İD: ' + element.id +'  |  Company Name: ' + element.companyName;
+
+                    suppliersList.appendChild(liElement);
+                });
+            })
+    }
+    loadSupplierList();
+</script>
+</html>

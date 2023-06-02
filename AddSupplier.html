@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div>
+        <label for="">Company Name:</label>
+        <input type="text" id="companyName" />
+    </div>
+
+    <div>
+        <label for="">Contact Name:</label>
+        <input type="text" id="contactName" />
+    </div>
+
+    <div>
+        <label for="">Contact Title:</label>
+        <input type="text" id="contactTitle" />
+    </div>
+    <div>
+        <button onclick="add()">Add</button>
+    </div>
+    <ul id="suppliers">
+
+    </ul>
+</body>
+<script>
+    function add() {
+
+        let companyNameVal = document.getElementById('companyName').value;
+        let contactNameVal = document.getElementById('contactName').value
+        let contactTitleVal=document.getElementById('contactTitle').value;
+
+        let newSupplier = {
+        companyName : companyNameVal,
+        contactName : contactNameVal,
+        contactTitle:contactTitleVal
+        }
+
+        axios.post('https://northwind.vercel.app/api/suppliers', newSupplier)
+        .then(res => {
+        console.log('Response', res);
+        alert('Ekleme işlemi başarılı')
+        loadSupplierList();
+        })
+
+        }
+        function loadSupplierList(){
+        axios.get('https://northwind.vercel.app/api/suppliers')
+        .then(res => {
+            let data = res.data;
+
+            let suppliersList =document.getElementById('suppliers');
+            suppliersList.innerHTML='';
+
+            data.forEach(element => {
+                
+                var liElement = document.createElement('li');
+                liElement.innerHTML ='Company Name: '+ element.companyName +'  |  Contact Name: ' + element.contactName +'  |  Contact Title: ' + element.contactTitle
+
+                suppliersList.appendChild(liElement);
+
+            });
+
+        });
+        }
+        loadSupplierList();
+</script>
+</html>

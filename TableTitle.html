@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <table>
+        <h2>Post Table</h2>
+        <h3>Post Length: <span id="postLength"></span></h3>
+        <tr>
+            <td id="userId">UserId</td>
+            <td İd="id">ID</td>
+            <td id="title">Title</td>
+            <td id="body">Body</td>
+        </tr>
+    </table>
+</body>
+<script>
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+            .then(res => {
+                let data = res.data;
+
+                let tableHTML = '';
+
+                data.forEach(element => {
+                    tableHTML += '<tr>';
+                    tableHTML += '<td>' + element.userId + '</td>';
+                    tableHTML += '<td>' + element.id + '</td>';
+                    tableHTML += '<td>' + element.title + '</td>';
+                    tableHTML += '<td>' + element.body + '</td>';
+                    tableHTML += '</tr>';
+                });
+
+                document.querySelector('table').innerHTML += tableHTML;
+                document.getElementById('postLength').textContent = data.length;
+            })
+
+</script>
+</html>
